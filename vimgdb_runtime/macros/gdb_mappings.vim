@@ -9,8 +9,8 @@ endif
 let s:gdb_k = 1
 function! ToggleGDB()
     if getwinvar(0,'&statusline') != ""
-        :set autochdir
-        :cd %:p:h
+        ":set autochdir
+        ":cd %:p:h
         :only
         set statusline=
         :call <SID>Toggle()
@@ -18,6 +18,7 @@ function! ToggleGDB()
         set statusline+=%F%m%r%h%w\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]
         :set noautochdir
         :call <SID>Toggle()
+		:call gdb(" ")
     endif
 endfunction
 
@@ -39,12 +40,12 @@ function! s:Toggle()
 	map <Space> :call gdb("")<CR>
 	nmap <silent> <C-Z> :call gdb("\032")<CR>
 
-	nmap <silent> B :call gdb("info breakpoints")<CR>
+	nmap <silent> <C-B> :call gdb("info breakpoints")<CR>
 	nmap <silent> L :call gdb("info locals")<CR>
 	nmap <silent> A :call gdb("info args")<CR>
 	nmap <silent> S :call gdb("step")<CR>
 	nmap <silent> I :call gdb("stepi")<CR>
-	nmap <silent> <C-N> :call gdb("next")<CR>
+	nmap <silent> N :call gdb("next")<CR>
 	nmap <silent> X :call gdb("nexti")<CR>
 	nmap <silent> F :call gdb("finish")<CR>
 	nmap <silent> R :call gdb("run")<CR>
@@ -55,14 +56,14 @@ function! s:Toggle()
 	nmap <silent> <C-D> :call gdb("down")<CR>
 
 	" set/clear bp at current line
-	nmap <silent> <C-B> :call <SID>Breakpoint("break")<CR>
-	nmap <silent> <C-E> :call <SID>Breakpoint("clear")<CR>
+	nmap <silent> B :call <SID>Breakpoint("break")<CR>
+	nmap <silent> E :call <SID>Breakpoint("clear")<CR>
 
 	" print value at cursor
-	nmap <silent> <C-P> :call gdb("print " . expand("<cword>"))<CR>
+	nmap <silent> P :call gdb("print " . expand("<cword>"))<CR>
 
 	" display Visual selected expression
-	vmap <silent> <C-P> y:call gdb("createvar " . "<C-R>"")<CR>
+	vmap <silent> P y:call gdb("createvar " . "<C-R>"")<CR>
 
 	" print value referenced by word at cursor
 	nmap <silent> <C-X> :call gdb("print *" . expand("<cword>"))<CR>
@@ -71,18 +72,20 @@ function! s:Toggle()
 	echo "gdb keys mapped"
 	echohl None
 
+
     " Restore vim defaults
     else
 	let s:gdb_k = 1
 	nunmap <Space>
 	nunmap <C-Z>
 
-	nunmap B
+	nunmap <C-B>
 	nunmap L
 	nunmap A
 	nunmap S
 	nunmap I
-	nunmap <C-N>
+	"nunmap <C-N>
+	nunmap N
 	nunmap X
 	nunmap F
 	nunmap R
@@ -92,9 +95,10 @@ function! s:Toggle()
 	nunmap <C-U>
 	nunmap <C-D>
 
-	nunmap <C-B>
-	nunmap <C-E>
-	nunmap <C-P>
+	nunmap B
+	nunmap E
+	"nunmap <C-P>
+	nunmap P
 	nunmap <C-X>
 
 	echohl ErrorMsg

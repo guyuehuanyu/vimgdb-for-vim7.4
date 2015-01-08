@@ -53,6 +53,8 @@ command (this is usually $HOME/.vim):
 :set runtimepath?
 
 cp  -rf /tmp/vimgdb-for-vim7.4/vimgdb_runtime/*  ~/.vim
+or 
+./install_runtime.sh
 
 Change to the doc directory, start Vim and run the ":helptags ."
 command to process the taglist help file. Without this step, you
